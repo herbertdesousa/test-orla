@@ -2,7 +2,7 @@ import {CreateTodo} from '../../domain/entities/Todo';
 import {TodoModel} from '../model/TodoModel';
 import {DatabaseDatasource} from './DatabaseDatasource';
 
-export class InMemoryDatasource implements DatabaseDatasource {
+export class InMemoryDatabaseDatasource implements DatabaseDatasource {
   private todos: TodoModel[] = [];
 
   async createTodo(createTodo: CreateTodo): Promise<TodoModel> {
