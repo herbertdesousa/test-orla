@@ -1,4 +1,4 @@
-import {CreateTodo} from '../../domain/entities/CreateTodo';
+import {CreateTodo} from '../../domain/entities/Todo';
 import {ExceptionHandler} from '../../utils/ExceptionHandler';
 import {Result} from '../../utils/Result';
 import {DatabaseDatasource} from '../datasources/DatabaseDatasource';

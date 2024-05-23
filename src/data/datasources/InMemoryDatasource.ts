@@ -1,4 +1,4 @@
-import {CreateTodo} from '../../domain/entities/CreateTodo';
+import {CreateTodo} from '../../domain/entities/Todo';
 import {TodoModel} from '../model/TodoModel';
 import {DatabaseDatasource} from './DatabaseDatasource';
 
