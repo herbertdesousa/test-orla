@@ -38,7 +38,7 @@ export class Todo {
 export const UpdateTodo = z.object({
   id: z.string().min(1, 'Required'),
 
-  title: z.string().optional(),
+  title: z.string().min(1, 'Required').optional(),
 
   describe: z.string().optional(),
 

@@ -10,10 +10,6 @@ describe('ValidationUpdateTodoUsecase', () => {
 
     expect(result.type === 'SUCCESS').toBeTruthy();
 
-    if (result.type === 'SUCCESS') {
-      return;
-    }
-
     //
 
     const { result: result2 } = await usecase.execute({
@@ -23,10 +19,14 @@ describe('ValidationUpdateTodoUsecase', () => {
       isDone: true,
     });
 
-    expect(result2.type === 'SUCCESS').toBeTruthy();
+    expect(result2.type === 'FAILURE').toBeTruthy();
 
-    if (result2.type === 'SUCCESS') {
-      return;
+    if (result2.type === 'FAILURE') {
+      expect(result2.data.code === 'VALIDATION').toBeTruthy();
+
+      if (result2.data.code === 'VALIDATION') {
+        expect(result2.data.payload.title).toBeTruthy();
+      }
     }
 
     //
