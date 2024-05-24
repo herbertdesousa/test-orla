@@ -33,8 +33,8 @@ export class UpdateTodoUsecase implements Usecase<Req, Res> {
 
     const created = await this.todoRepository.update({
       id: payload.id,
-      title: payload?.title || undefined,
-      describe: payload?.describe || undefined,
+      title: 'title' in payload ? payload.title : undefined,
+      describe: 'describe' in payload ? payload.describe : undefined,
       ...(payload?.isDone && { status: payload.isDone ? 'DONE' : 'PENDING' }),
     });
 

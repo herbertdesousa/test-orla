@@ -21,19 +21,19 @@ export class InMemoryDatabaseDatasource implements DatabaseDatasource {
       return null;
     }
 
-    if (payload?.title) {
+    if (payload?.title !== undefined) {
       this.todos[todoIndex].title = payload.title;
     }
-    if (payload?.describe) {
+    if (payload?.describe !== undefined) {
       this.todos[todoIndex].describe = payload.describe;
     }
-    if (payload?.status) {
+    if (payload?.status !== undefined) {
       this.todos[todoIndex].status = payload.status;
     }
-    if (payload?.createdAt) {
+    if (payload?.createdAt !== undefined) {
       this.todos[todoIndex].createdAt = payload.createdAt;
     }
-    if (payload?.updatedAt) {
+    if (payload?.updatedAt !== undefined) {
       this.todos[todoIndex].updatedAt = payload.updatedAt;
     }
 

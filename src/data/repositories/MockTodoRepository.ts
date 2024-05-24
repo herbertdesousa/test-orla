@@ -40,34 +40,28 @@ export class MockTodoRepository implements TodoRepository {
   }
 
   @ExceptionHandler()
-  async update({
-    id,
-    createdAt,
-    describe,
-    status,
-    title,
-    updatedAt,
-  }: UpdateTodoModel): TodoRepositoryUpdateRes {
-    const todoIndex = this.todos.findIndex(todo => todo.id === id);
+  async update(req: UpdateTodoModel): TodoRepositoryUpdateRes {
+    const todoIndex = this.todos.findIndex(todo => todo.id === req.id);
 
     if (todoIndex === -1) {
       return Result.Failure({ code: 'NOT_FOUND' });
     }
 
-    if (title) {
-      this.todos[todoIndex].title = title;
+    if (req.title !== undefined) {
+      this.todos[todoIndex].title = req.title;
     }
-    if (describe) {
-      this.todos[todoIndex].describe = describe;
+    if (req.describe !== undefined) {
+      console.log('chegou aqui');
+      this.todos[todoIndex].describe = req.describe;
     }
-    if (status) {
-      this.todos[todoIndex].status = status;
+    if (req.status !== undefined) {
+      this.todos[todoIndex].status = req.status;
     }
-    if (createdAt) {
-      this.todos[todoIndex].createdAt = createdAt;
+    if (req.createdAt !== undefined) {
+      this.todos[todoIndex].createdAt = req.createdAt;
     }
-    if (updatedAt) {
-      this.todos[todoIndex].updatedAt = updatedAt;
+    if (req.updatedAt !== undefined) {
+      this.todos[todoIndex].updatedAt = req.updatedAt;
     }
 
     return Result.Success(this.todos[todoIndex]);

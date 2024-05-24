@@ -52,6 +52,43 @@ describe('UpdateTodoUsecase', () => {
     expect(result.payload).toEqual([expected1]);
   });
 
+  it('should be able to update describe to empty string', async () => {
+    const dateNow = Date.now();
+    const date = new Date(dateNow);
+
+    jest.spyOn(Date, 'now').mockImplementation(() => dateNow);
+
+    await repository.create({
+      title: 'Job',
+      describe: 'something',
+      status: 'PENDING',
+    });
+
+    const { result } = await usecase.execute({
+      id: 'id-123',
+      title: 'Task I',
+      describe: '',
+      isDone: true,
+    });
+
+    expect(result.type === 'SUCCESS').toBeTruthy();
+
+    if (result.type === 'FAILURE') {
+      return;
+    }
+
+    const expected1: Todo = {
+      id: result.payload[0].id,
+      title: 'Task I',
+      describe: '',
+      isDone: true,
+      createdAt: date,
+      updatedAt: date,
+    };
+
+    expect(result.payload).toEqual([expected1]);
+  });
+
   it('should be able to update and return todos without fields', async () => {
     const dateNow = Date.now();
     const date = new Date(dateNow);
