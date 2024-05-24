@@ -1,7 +1,7 @@
 import { ExceptionHandler } from '../../utils/ExceptionHandler';
 import { Result } from '../../utils/Result';
-import { CacheDatasource } from '../datasources/CacheDatasource';
-import { DatabaseDatasource } from '../datasources/DatabaseDatasource';
+import { CacheDatasource } from '../datasources/cache/CacheDatasource';
+import { DatabaseDatasource } from '../datasources/database/DatabaseDatasource';
 import { CreateTodoModel, TodoModel } from '../model/TodoModel';
 import {
   TodoRepository,

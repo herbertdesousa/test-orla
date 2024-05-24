@@ -1,4 +1,4 @@
-import { TodoModel } from '../model/TodoModel';
+import { TodoModel } from '../../model/TodoModel';
 import { DatabaseDatasource } from './DatabaseDatasource';
 
 export class InMemoryDatabaseDatasource implements DatabaseDatasource {

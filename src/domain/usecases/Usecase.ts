@@ -1,5 +1,5 @@
-import { CacheDatasource } from '../../data/datasources/CacheDatasource';
-import { InMemoryDatabaseDatasource } from '../../data/datasources/InMemoryDatabaseDatasource';
+import { CacheDatasource } from '../../data/datasources/cache/CacheDatasource';
+import { InMemoryDatabaseDatasource } from '../../data/datasources/database/InMemoryDatabaseDatasource';
 import { TodoRepositoryImpl } from '../../data/repositories/TodoRepositoryImpl';
 import { Result } from '../../utils/Result';
 // import { CreateTodoUsecase } from './CreateTodoUsecase';
