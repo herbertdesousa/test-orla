@@ -8,7 +8,8 @@ export const Btn = styled(RectButton)`
   align-items: center;
   gap: 8px;
 
-  background-color: ${COLORS.primary};
+  background-color: ${props =>
+    props.enabled ? COLORS.primary : COLORS.container};
   padding: 12px 16px;
   border-radius: 8px;
 `;

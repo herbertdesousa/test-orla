@@ -12,6 +12,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RouteStack } from '../Router';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
+import { useTodoSave } from './useTodoSave';
 
 type Props = NativeStackScreenProps<RouteStack, 'Save'>;
 
@@ -19,6 +20,8 @@ export function TodoSave({ navigation }: Props) {
   function handleExit() {
     navigation.goBack();
   }
+
+  const { fields, submit } = useTodoSave({ goBack: handleExit });
 
   return (
     <Container>
@@ -33,11 +36,13 @@ export function TodoSave({ navigation }: Props) {
       </Header>
 
       <Form>
-        <Input placeholder="Title*" />
+        <Input placeholder="Title*" onChangeText={fields.title.set} />
 
-        <Input placeholder="Describe" />
+        <Input placeholder="Describe" onChangeText={fields.describe.set} />
 
-        <Button>Create</Button>
+        <Button isDisabled={!submit.isEnabled} onPress={submit.dispatch}>
+          Create
+        </Button>
       </Form>
     </Container>
   );
