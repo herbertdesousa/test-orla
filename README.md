@@ -1,8 +1,30 @@
 # Teste Orla
 Sou Herbert e essa é minha implementação do desafio. A arquitura da aplicação é uma mistura de <u>MVVM</u> com <u>Clean Archicture</u> herdados do Android Nativo com Kotlin, onde é comumente usado.
 
+[x] create view
+[x] update
+  [x] logic
+  [ ] view
+[] delete
+  [] logic
+  [] view
+[] search
+  [] logic
+  [] view
+[] readme
+
 add 'como rodar o projeto'
+  explicar o --force
+  rodar teste com --clear
 add 'requisitos de negocio'
+add 'features'
+  cache
+  arquitetura
+    serialização de dados externa com validação
+    inspirações de outros lugares
+      result - sealed class em kotlin
+      exception handler decorator
+    in memory database - demostrando desacoplação de serviços
 add 'melhorias a ser feitas'
   injeção de depencia na mão, talvez um tsyringe
 

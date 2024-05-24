@@ -21,10 +21,7 @@ export function useTodoSave({ route: { params }, navigation }: Props) {
   const mode: Mode =
     params === undefined
       ? { type: 'CREATE' }
-      : {
-          type: 'UPDATE',
-          payload: params,
-        };
+      : { type: 'UPDATE', payload: params };
 
   const [titleField, setTitleField] = useState(() => {
     if (mode.type === 'CREATE') {
