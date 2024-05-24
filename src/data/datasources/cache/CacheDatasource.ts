@@ -1,15 +1,7 @@
-export class CacheDatasource<Data> {
-  private cache: null | Data = null;
+export interface CacheDatasource<Data> {
+  clear(): void;
 
-  clear() {
-    this.cache = null;
-  }
+  set(cache: Data): void;
 
-  set(cache: Data) {
-    this.cache = cache;
-  }
-
-  get() {
-    return this.cache;
-  }
+  get(): Data | null;
 }

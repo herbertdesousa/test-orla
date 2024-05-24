@@ -1,4 +1,4 @@
-import { CacheDatasource } from '../../data/datasources/cache/CacheDatasource';
+import { InMemoryCacheDatasource } from '../../data/datasources/cache/InMemoryCacheDatasource';
 import { InMemoryDatabaseDatasource } from '../../data/datasources/database/InMemoryDatabaseDatasource';
 import { TodoRepositoryImpl } from '../../data/repositories/TodoRepositoryImpl';
 import { Result } from '../../utils/Result';
@@ -15,7 +15,7 @@ const todoDatasource = new InMemoryDatabaseDatasource();
 
 const todoRepository = new TodoRepositoryImpl(
   todoDatasource,
-  new CacheDatasource(),
+  new InMemoryCacheDatasource(),
 );
 
 // const createTodoUsecase = new CreateTodoUsecase(todoRepository);
