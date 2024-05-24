@@ -45,4 +45,16 @@ describe('ListTodoUsecase', () => {
       ]);
     }
   });
+
+  it('should be able to catch return error case failure to list all', async () => {
+    jest
+      .spyOn(mockTodoRepository, 'listAll')
+      .mockImplementationOnce(async () => Result.Failure({ code: 'UNKNOWN' }));
+
+    const { result } = await listTodoUsecase.execute();
+
+    expect(
+      result.type === 'FAILURE' && result.data.code === 'UNKNOWN',
+    ).toBeTruthy();
+  });
 });
