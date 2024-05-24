@@ -1,79 +1,33 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Teste Orla
+Sou Herbert e essa é minha implementação do desafio. A arquitura da aplicação é uma mistura de <u>MVVM</u> com <u>Clean Archicture</u> herdados do Android Nativo com Kotlin, onde é comumente usado.
 
-# Getting Started
+## Camadas
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+### Data Layer
+Camada de dados da aplicação, toda interação com <u>APIs externas, Fonte de dados,
+modelos de dados externos</u> e etc
 
-## Step 1: Start the Metro Server
+**Datasource**
+<u>Fonte de dados</u>, onde é chamado as APIs externas, como o InMemoryDatabase por exemplo, podendo ter ou não um <u>contrato</u> caso tenha mais de uma <u>implementação</u>.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+**Model**
+<u>Formato do dado</u>, esse formato feito com algum trabalho de <u>serialização</u> evitando que a fonte externa esteja diferente da tipagem evitando problemas em <u>runtime</u>.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+**Repositories**
+Onde ocorre a <u>chamada das diferentes fonte de dados</u> relacionadas a um domínio em específico, um exemplo seria uma chamada a API Backend e um outro serviço de BaaS como Firebase na autenticação de um usuário.
 
-```bash
-# using npm
-npm start
+### Domain Layer
+Camada de <u>Regras de Negócio da Aplicação</u> onde testes deve ser de maior foco por justamente testar as funcionalidades da aplicação sem interfêrencia de dados externos ou UI.
 
-# OR using Yarn
-yarn start
-```
+**Entites**
+<u>Formato de dado</u> da aplicação. Separar **entity** de **model** permite que os dados vindo de uma api sejam diferentes dos dados dentro da aplicação, sendo mais desacoplável.
+Além do mais, na maioria das vezes as **entities** possuem um *serializer* ou *deserializer* da model.
 
-## Step 2: Start your Application
+**UseCases**
+Nas **UseCases** são onde efetivamente as regras de negócios são feitas, regras de criar de algum dado, sign-in na autenticação, validação de formulário...
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+### View Layer
 
-### For Android
+**Components** Pasta de componentes comuns, como Input, Buttons...
 
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+**Screens** Telas da aplicação
