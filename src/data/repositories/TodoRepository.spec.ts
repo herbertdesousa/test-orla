@@ -3,16 +3,20 @@ import { InMemoryDatabaseDatasource } from '../datasources/database/InMemoryData
 import { TodoModel } from '../model/TodoModel';
 import { TodoRepositoryImpl } from './TodoRepositoryImpl';
 
-const databaseDatasource = new InMemoryDatabaseDatasource();
-const cacheDatasource = new InMemoryCacheDatasource<TodoModel[]>();
-const todoRepository = new TodoRepositoryImpl(
-  databaseDatasource,
-  cacheDatasource,
-);
-
 describe('TodoRepository', () => {
+  let databaseDatasource: InMemoryDatabaseDatasource;
+  let cacheDatasource: InMemoryCacheDatasource<TodoModel[]>;
+  let todoRepository: TodoRepositoryImpl;
+
   beforeEach(() => {
     jest.clearAllMocks();
+
+    databaseDatasource = new InMemoryDatabaseDatasource();
+    cacheDatasource = new InMemoryCacheDatasource<TodoModel[]>();
+    todoRepository = new TodoRepositoryImpl(
+      databaseDatasource,
+      cacheDatasource,
+    );
   });
 
   describe('create', () => {
@@ -174,6 +178,36 @@ describe('TodoRepository', () => {
       });
 
       expect(cacheClear).toHaveBeenCalledTimes(0);
+
+      expect(
+        result.type === 'FAILURE' && result.data.code === 'NOT_FOUND',
+      ).toBeTruthy();
+    });
+  });
+
+  describe('delete', () => {
+    it('should be able to delete a todo', async () => {
+      await databaseDatasource.createTodo({
+        id: 'id-123',
+        title: 'Task I',
+        describe: 'do something',
+        status: 'PENDING',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
+
+      const { result } = await todoRepository.delete('id-123');
+
+      expect(result.type === 'SUCCESS').toBeTruthy();
+      expect(cacheClear).toHaveBeenCalledTimes(1);
+
+      expect((await databaseDatasource.listAllTodos()).length).toBe(0);
+    });
+
+    it('should not be able to delete a unexisting todo', async () => {
+      const { result } = await todoRepository.delete('unexisting');
 
       expect(
         result.type === 'FAILURE' && result.data.code === 'NOT_FOUND',

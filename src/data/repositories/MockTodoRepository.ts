@@ -8,6 +8,7 @@ import {
 import {
   TodoRepository,
   TodoRepositoryCreateRes,
+  TodoRepositoryDeleteRes,
   TodoRepositoryListAllRes,
   TodoRepositoryUpdateRes,
 } from './TodoRepository';
@@ -15,6 +16,7 @@ import {
 export class MockTodoRepository implements TodoRepository {
   private todos: TodoModel[] = [];
 
+  @ExceptionHandler()
   async create({
     title,
     describe,
@@ -62,6 +64,19 @@ export class MockTodoRepository implements TodoRepository {
     if (req.updatedAt !== undefined) {
       this.todos[todoIndex].updatedAt = req.updatedAt;
     }
+
+    return Result.Success(this.todos[todoIndex]);
+  }
+
+  @ExceptionHandler()
+  async delete(id: string): TodoRepositoryDeleteRes {
+    const todoIndex = this.todos.findIndex(todo => todo.id === id);
+
+    if (todoIndex === -1) {
+      return Result.Failure({ code: 'NOT_FOUND' });
+    }
+
+    this.todos = this.todos.filter(todo => todo.id !== id);
 
     return Result.Success(this.todos[todoIndex]);
   }

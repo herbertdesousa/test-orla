@@ -4,7 +4,7 @@ Sou Herbert e essa é minha implementação do desafio. A arquitura da aplicaç�
 [x] create view
 [x] update
   [x] logic
-  [ ] view
+  [x] view
 [] delete
   [] logic
   [] view

@@ -39,4 +39,18 @@ export class InMemoryDatabaseDatasource implements DatabaseDatasource {
 
     return this.todos[todoIndex];
   }
+
+  async deleteTodo(id: string): Promise<TodoModel | null> {
+    const todoIndex = this.todos.findIndex(todo => todo.id === id);
+
+    if (todoIndex === -1) {
+      return null;
+    }
+
+    const todo = this.todos[todoIndex];
+
+    this.todos = this.todos.filter(todo => todo.id !== id);
+
+    return todo;
+  }
 }

@@ -10,6 +10,7 @@ import {
 import {
   TodoRepository,
   TodoRepositoryCreateRes,
+  TodoRepositoryDeleteRes,
   TodoRepositoryListAllRes,
   TodoRepositoryUpdateRes,
 } from './TodoRepository';
@@ -81,5 +82,18 @@ export class TodoRepositoryImpl implements TodoRepository {
     this.cache.clear();
 
     return Result.Success(todo);
+  }
+
+  @ExceptionHandler()
+  async delete(id: string): TodoRepositoryDeleteRes {
+    this.cache.clear();
+
+    const deletedTodo = await this.datasource.deleteTodo(id);
+
+    if (!deletedTodo) {
+      return Result.Failure({ code: 'NOT_FOUND' });
+    }
+
+    return Result.Success(deletedTodo);
   }
 }

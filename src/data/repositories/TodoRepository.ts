@@ -17,10 +17,16 @@ export type TodoRepositoryUpdateRes = Promise<
   Result<TodoModel, DefaultResultFailure | { code: 'NOT_FOUND' }>
 >;
 
+export type TodoRepositoryDeleteRes = Promise<
+  Result<TodoModel, DefaultResultFailure | { code: 'NOT_FOUND' }>
+>;
+
 export interface TodoRepository {
   create(payload: CreateTodoModel): TodoRepositoryCreateRes;
 
   listAll(): TodoRepositoryListAllRes;
 
   update(payload: UpdateTodoModel): TodoRepositoryUpdateRes;
+
+  delete(id: string): TodoRepositoryDeleteRes;
 }
