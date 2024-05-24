@@ -1,6 +1,11 @@
 # Teste Orla
 Sou Herbert e essa é minha implementação do desafio. A arquitura da aplicação é uma mistura de <u>MVVM</u> com <u>Clean Archicture</u> herdados do Android Nativo com Kotlin, onde é comumente usado.
 
+add 'como rodar o projeto'
+add 'requisitos de negocio'
+add 'melhorias a ser feitas'
+  injeção de depencia na mão, talvez um tsyringe
+
 ## Camadas
 
 ### Data Layer
