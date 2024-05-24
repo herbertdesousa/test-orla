@@ -7,8 +7,8 @@ export type DefaultResultFailure = {
 };
 
 type ResultType<Success, Failure extends ResultFailure> =
-  | {type: 'SUCCESS'; payload: Success}
-  | {type: 'FAILURE'; data: Failure};
+  | { type: 'SUCCESS'; payload: Success }
+  | { type: 'FAILURE'; data: Failure };
 
 export class Result<Success, Failure extends ResultFailure> {
   private constructor(public result: ResultType<Success, Failure>) {}
@@ -16,12 +16,12 @@ export class Result<Success, Failure extends ResultFailure> {
   static Success<Success, Failure extends ResultFailure>(
     payload: Success,
   ): Result<Success, Failure> {
-    return new Result<Success, Failure>({type: 'SUCCESS', payload});
+    return new Result<Success, Failure>({ type: 'SUCCESS', payload });
   }
 
   static Failure<Success, Failure extends ResultFailure>(
     data: Failure,
   ): Result<Success, Failure> {
-    return new Result<Success, Failure>({type: 'FAILURE', data});
+    return new Result<Success, Failure>({ type: 'FAILURE', data });
   }
 }

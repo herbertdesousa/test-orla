@@ -1,6 +1,6 @@
-import {CreateTodo} from '../../domain/entities/Todo';
-import {TodoModel} from '../model/TodoModel';
-import {DatabaseDatasource} from './DatabaseDatasource';
+import { CreateTodo } from '../../domain/entities/Todo';
+import { TodoModel } from '../model/TodoModel';
+import { DatabaseDatasource } from './DatabaseDatasource';
 
 export class InMemoryDatabaseDatasource implements DatabaseDatasource {
   private todos: TodoModel[] = [];

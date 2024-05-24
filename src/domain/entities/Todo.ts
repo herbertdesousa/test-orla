@@ -1,5 +1,5 @@
-import {z} from 'zod';
-import {TodoModel} from '../../data/model/TodoModel';
+import { z } from 'zod';
+import { TodoModel } from '../../data/model/TodoModel';
 
 export const CreateTodo = z.object({
   title: z.string(),
