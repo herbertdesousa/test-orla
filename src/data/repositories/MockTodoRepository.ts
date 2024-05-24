@@ -51,7 +51,6 @@ export class MockTodoRepository implements TodoRepository {
       this.todos[todoIndex].title = req.title;
     }
     if (req.describe !== undefined) {
-      console.log('chegou aqui');
       this.todos[todoIndex].describe = req.describe;
     }
     if (req.status !== undefined) {
