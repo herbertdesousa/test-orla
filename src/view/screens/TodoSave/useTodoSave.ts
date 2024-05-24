@@ -52,8 +52,8 @@ export function useTodoSave({ route: { params }, navigation }: Props) {
       } else {
         const { result } = await Usecases.todo.validateUpdate.execute({
           id: mode.payload.id,
-          title: mode.payload.title,
-          describe: mode.payload.describe,
+          title: titleField,
+          describe: describeField,
           isDone: mode.payload.isDone,
         });
 
