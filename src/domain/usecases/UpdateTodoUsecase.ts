@@ -35,7 +35,8 @@ export class UpdateTodoUsecase implements Usecase<Req, Res> {
       id: payload.id,
       title: 'title' in payload ? payload.title : undefined,
       describe: 'describe' in payload ? payload.describe : undefined,
-      ...(payload?.isDone && { status: payload.isDone ? 'DONE' : 'PENDING' }),
+      status:
+        'isDone' in payload ? (payload.isDone ? 'DONE' : 'PENDING') : undefined,
     });
 
     if (created.result.type === 'FAILURE') {

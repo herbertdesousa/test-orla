@@ -89,6 +89,69 @@ describe('UpdateTodoUsecase', () => {
     expect(result.payload).toEqual([expected1]);
   });
 
+  it('should be able to update isDone from true to false', async () => {
+    const dateNow = Date.now();
+    const date = new Date(dateNow);
+
+    jest.spyOn(Date, 'now').mockImplementation(() => dateNow);
+
+    await repository.create({
+      title: 'Job',
+      describe: 'something',
+      status: 'PENDING',
+    });
+
+    const { result } = await usecase.execute({
+      id: 'id-123',
+      title: 'Task I',
+      describe: 'something',
+      isDone: true,
+    });
+
+    expect(result.type === 'SUCCESS').toBeTruthy();
+
+    if (result.type === 'FAILURE') {
+      return;
+    }
+
+    const expected1: Todo = {
+      id: result.payload[0].id,
+      title: 'Task I',
+      describe: 'something',
+      isDone: true,
+      createdAt: date,
+      updatedAt: date,
+    };
+
+    expect(result.payload).toEqual([expected1]);
+
+    //
+
+    const { result: result2 } = await usecase.execute({
+      id: 'id-123',
+      title: 'Task I',
+      describe: 'something',
+      isDone: false,
+    });
+
+    expect(result2.type === 'SUCCESS').toBeTruthy();
+
+    if (result2.type === 'FAILURE') {
+      return;
+    }
+
+    const expected2: Todo = {
+      id: result2.payload[0].id,
+      title: 'Task I',
+      describe: 'something',
+      isDone: false,
+      createdAt: date,
+      updatedAt: date,
+    };
+
+    expect(result2.payload).toEqual([expected2]);
+  });
+
   it('should be able to update and return todos without fields', async () => {
     const dateNow = Date.now();
     const date = new Date(dateNow);
