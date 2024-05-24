@@ -3,6 +3,7 @@ import { InMemoryDatabaseDatasource } from '../../data/datasources/database/InMe
 import { TodoRepositoryImpl } from '../../data/repositories/TodoRepositoryImpl';
 import { Result } from '../../utils/Result';
 import { CreateTodoUsecase } from './CreateTodoUsecase';
+import { DeleteTodoUsecase } from './DeleteTodoUsecase';
 // import { CreateTodoUsecase } from './CreateTodoUsecase';
 import { ListTodoUsecase } from './ListTodoUsecase';
 import { UpdateTodoUsecase } from './UpdateTodoUsecase';
@@ -33,6 +34,7 @@ const updateTodoUsecase = new UpdateTodoUsecase(
   validationUpdateTodoUsecase,
 );
 const listTodoUsecase = new ListTodoUsecase(todoRepository);
+const deleteTodoUsecase = new DeleteTodoUsecase(todoRepository);
 
 export const Usecases = {
   todo: {
@@ -41,5 +43,6 @@ export const Usecases = {
     list: listTodoUsecase,
     validateCreate: validationCreateTodoUsecase,
     validateUpdate: validationUpdateTodoUsecase,
+    delete: deleteTodoUsecase,
   },
 };

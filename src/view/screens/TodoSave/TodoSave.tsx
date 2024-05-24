@@ -21,7 +21,7 @@ import { useTodoSave } from './useTodoSave';
 type Props = NativeStackScreenProps<RouteStack, 'Save'>;
 
 export function TodoSave(props: Props) {
-  const { title, fields, submit, exit } = useTodoSave(props);
+  const { title, fields, submit, exit, deleteBtn } = useTodoSave(props);
 
   return (
     <Container>
@@ -67,6 +67,12 @@ export function TodoSave(props: Props) {
         <Button isDisabled={!submit.isEnabled} onPress={submit.dispatch}>
           {submit.label}
         </Button>
+
+        {deleteBtn.isShowing && (
+          <Button variant="text" onPress={deleteBtn.dispatch}>
+            delete
+          </Button>
+        )}
       </Form>
     </Container>
   );

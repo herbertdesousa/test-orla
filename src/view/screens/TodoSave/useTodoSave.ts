@@ -7,13 +7,8 @@ import { RouteStack } from '../Router';
 type Props = NativeStackScreenProps<RouteStack, 'Save'>;
 
 type Mode =
-  | {
-      type: 'CREATE';
-    }
-  | {
-      type: 'UPDATE';
-      payload: NonNullable<Props['route']['params']>;
-    };
+  | { type: 'CREATE' }
+  | { type: 'UPDATE'; payload: NonNullable<Props['route']['params']> };
 
 export function useTodoSave({ route: { params }, navigation }: Props) {
   const manager = useTaskManager(st => ({ setTodos: st.setTodos }));
@@ -108,6 +103,23 @@ export function useTodoSave({ route: { params }, navigation }: Props) {
     }
   }
 
+  async function handleDelete() {
+    if (mode.type === 'UPDATE') {
+      const { result } = await Usecases.todo.delete.execute({
+        id: mode.payload.id,
+      });
+
+      if (result.type === 'FAILURE') {
+        console.log('falha ao deletar');
+        return;
+      }
+
+      manager.setTodos(result.payload);
+
+      navigation.goBack();
+    }
+  }
+
   const title = useMemo(() => {
     const prefix = mode.type === 'CREATE' ? 'New' : 'Update';
 
@@ -150,6 +162,10 @@ export function useTodoSave({ route: { params }, navigation }: Props) {
       isEnabled: isSubmitEnabled,
       dispatch: handleSubmit,
       label: submiLabel,
+    },
+    deleteBtn: {
+      isShowing: mode.type === 'UPDATE',
+      dispatch: handleDelete,
     },
   };
 }
