@@ -1,11 +1,12 @@
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Todo } from '../../domain/entities/Todo';
 import { TodoList } from './TodoList/TodoList';
 import { TodoSave } from './TodoSave/TodoSave';
-import { NavigationContainer } from '@react-navigation/native';
 
 export type RouteStack = {
   Home: undefined;
-  Save: undefined;
+  Save?: Omit<Todo, 'createdAt' | 'updatedAt'>;
 };
 
 const { Navigator, Screen } = createNativeStackNavigator<RouteStack>();

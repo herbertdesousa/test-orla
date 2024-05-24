@@ -16,19 +16,15 @@ import { useTodoSave } from './useTodoSave';
 
 type Props = NativeStackScreenProps<RouteStack, 'Save'>;
 
-export function TodoSave({ navigation }: Props) {
-  function handleExit() {
-    navigation.goBack();
-  }
-
-  const { fields, submit } = useTodoSave({ goBack: handleExit });
+export function TodoSave(props: Props) {
+  const { title, fields, submit, exit } = useTodoSave(props);
 
   return (
     <Container>
       <Header>
-        <Title>New To Do</Title>
+        <Title>{title}</Title>
 
-        <LeaveBtn onPress={handleExit}>
+        <LeaveBtn onPress={exit}>
           <Icon name="close" size={24} color={COLORS.onSurface} />
 
           <LeaveBtnText>Exit</LeaveBtnText>
@@ -36,12 +32,20 @@ export function TodoSave({ navigation }: Props) {
       </Header>
 
       <Form>
-        <Input placeholder="Title*" onChangeText={fields.title.set} />
+        <Input
+          placeholder="Title*"
+          onChangeText={fields.title.set}
+          value={fields.title.state}
+        />
 
-        <Input placeholder="Describe" onChangeText={fields.describe.set} />
+        <Input
+          placeholder="Describe"
+          onChangeText={fields.describe.set}
+          value={fields.describe.state}
+        />
 
         <Button isDisabled={!submit.isEnabled} onPress={submit.dispatch}>
-          Create
+          {submit.label}
         </Button>
       </Form>
     </Container>

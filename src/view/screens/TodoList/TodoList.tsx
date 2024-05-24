@@ -40,7 +40,15 @@ export function TodoList({ navigation }: Props) {
         // eslint-disable-next-line react-native/no-inline-styles
         contentContainerStyle={{ gap: 12 }}
         renderItem={({ item }) => (
-          <ListItem onPress={() => console.log('click')}>
+          <ListItem
+            onPress={() => {
+              navigation.navigate('Save', {
+                id: item.id,
+                title: item.title,
+                describe: item.describe,
+                isDone: item.isDone,
+              });
+            }}>
             <ListItemLeft>
               <ListItemTitle>{item.title}</ListItemTitle>
               <ListItemDescription>{item.describe}</ListItemDescription>
