@@ -37,6 +37,13 @@ export function useTodoSave({ route: { params }, navigation }: Props) {
 
     return mode.payload.describe || '';
   });
+  const [isDoneField, setIsDoneField] = useState(() => {
+    if (mode.type === 'CREATE') {
+      return false;
+    }
+
+    return mode.payload.isDone || false;
+  });
 
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
@@ -54,7 +61,7 @@ export function useTodoSave({ route: { params }, navigation }: Props) {
           id: mode.payload.id,
           title: titleField,
           describe: describeField,
-          isDone: mode.payload.isDone,
+          isDone: isDoneField,
         });
 
         setIsSubmitEnabled(result.type === 'SUCCESS');
@@ -87,7 +94,7 @@ export function useTodoSave({ route: { params }, navigation }: Props) {
         id: mode.payload.id,
         title: titleField,
         describe: describeField,
-        isDone: mode.payload.isDone,
+        isDone: isDoneField,
       });
 
       if (result.type === 'FAILURE') {
@@ -113,6 +120,10 @@ export function useTodoSave({ route: { params }, navigation }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function handleToggleIsDone() {
+    setIsDoneField(st => !st);
+  }
+
   function handleExit() {
     navigation.goBack();
   }
@@ -128,6 +139,11 @@ export function useTodoSave({ route: { params }, navigation }: Props) {
       describe: {
         set: setDescribeField,
         state: describeField,
+      },
+      done: {
+        isShowing: mode.type === 'UPDATE',
+        toggle: handleToggleIsDone,
+        state: isDoneField,
       },
     },
     submit: {

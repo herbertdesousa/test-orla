@@ -5,4 +5,6 @@ export const COLORS = {
   container: '#43483E',
   primary: '#386A1F',
   onPrimary: '#FFFFFF',
+  secondary: '#55624C',
+  onSecondary: '#FFFFFF',
 };

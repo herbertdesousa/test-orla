@@ -1,8 +1,12 @@
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   Container,
+  DoneBtn,
+  DoneBtnLabel,
+  DoneBtnTip,
   Form,
   Header,
+  Inputs,
   LeaveBtn,
   LeaveBtnText,
   Title,
@@ -32,17 +36,33 @@ export function TodoSave(props: Props) {
       </Header>
 
       <Form>
-        <Input
-          placeholder="Title*"
-          onChangeText={fields.title.set}
-          value={fields.title.state}
-        />
+        <Inputs>
+          <Input
+            placeholder="Title*"
+            onChangeText={fields.title.set}
+            value={fields.title.state}
+          />
 
-        <Input
-          placeholder="Describe"
-          onChangeText={fields.describe.set}
-          value={fields.describe.state}
-        />
+          <Input
+            placeholder="Describe"
+            onChangeText={fields.describe.set}
+            value={fields.describe.state}
+          />
+
+          {fields.done.isShowing && (
+            <DoneBtn onPress={fields.done.toggle} isDone={fields.done.state}>
+              <DoneBtnLabel>
+                {fields.done.state ? 'Done' : 'Pending'}
+              </DoneBtnLabel>
+
+              <DoneBtnTip>
+                {fields.done.state
+                  ? 'Click to Undo to not Done'
+                  : 'Click to Mark as Done'}
+              </DoneBtnTip>
+            </DoneBtn>
+          )}
+        </Inputs>
 
         <Button isDisabled={!submit.isEnabled} onPress={submit.dispatch}>
           {submit.label}
