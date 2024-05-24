@@ -2,9 +2,11 @@ import { MockTodoRepository } from '../../data/repositories/MockTodoRepository';
 import { Result } from '../../utils/Result';
 import { Todo } from '../entities/Todo';
 import { CreateTodoUsecase } from './CreateTodoUsecase';
+import { ValidationCreateTodoUsecase } from './ValidationCreateTodoUsecase';
 
 const repository = new MockTodoRepository();
-const usecase = new CreateTodoUsecase(repository);
+const validationTodoUsecase = new ValidationCreateTodoUsecase();
+const usecase = new CreateTodoUsecase(repository, validationTodoUsecase);
 
 describe('CreateTodoUsecase', () => {
   it('should be able to create and return todos', async () => {
@@ -47,9 +49,18 @@ describe('CreateTodoUsecase', () => {
   });
 
   it('should not be able to create if validation fails', async () => {
+    jest
+      .spyOn(validationTodoUsecase, 'execute')
+      .mockImplementationOnce(async () => {
+        return Result.Failure({
+          code: 'VALIDATION',
+          payload: { title: ['Required'] },
+        });
+      });
+
     const { result } = await usecase.execute({
       title: '',
-      describe: 'do something',
+      describe: '',
     });
 
     expect(result.type === 'FAILURE').toBeTruthy();
