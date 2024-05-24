@@ -3,7 +3,24 @@ import { TodoModel } from '../model/TodoModel';
 import { DatabaseDatasource } from './DatabaseDatasource';
 
 export class InMemoryDatabaseDatasource implements DatabaseDatasource {
-  private todos: TodoModel[] = [];
+  private todos: TodoModel[] = [
+    {
+      id: 'id-123',
+      title: 'Task I',
+      describe: 'do something',
+      status: 'PENDING',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: 'id-456',
+      title: 'Task II',
+      describe: 'do something',
+      status: 'DONE',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  ];
 
   async createTodo(createTodo: CreateTodo): Promise<TodoModel> {
     const todo: TodoModel = {
@@ -18,5 +35,9 @@ export class InMemoryDatabaseDatasource implements DatabaseDatasource {
     this.todos.push(todo);
 
     return todo;
+  }
+
+  async listAllTodos(): Promise<TodoModel[]> {
+    return this.todos;
   }
 }

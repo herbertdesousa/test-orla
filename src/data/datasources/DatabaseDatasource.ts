@@ -3,4 +3,6 @@ import { TodoModel } from '../model/TodoModel';
 
 export interface DatabaseDatasource {
   createTodo(createTodo: CreateTodo): Promise<TodoModel>;
+
+  listAllTodos(): Promise<TodoModel[]>;
 }

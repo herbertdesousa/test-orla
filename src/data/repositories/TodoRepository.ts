@@ -6,6 +6,12 @@ export type TodoRepositoryCreateRes = Promise<
   Result<TodoModel, DefaultResultFailure>
 >;
 
+export type TodoRepositoryListAllRes = Promise<
+  Result<TodoModel[], DefaultResultFailure>
+>;
+
 export interface TodoRepository {
   create(payload: CreateTodo): TodoRepositoryCreateRes;
+
+  listAll(): TodoRepositoryListAllRes;
 }
