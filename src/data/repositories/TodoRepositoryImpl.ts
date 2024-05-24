@@ -1,9 +1,8 @@
-import { CreateTodo } from '../../domain/entities/Todo';
 import { ExceptionHandler } from '../../utils/ExceptionHandler';
 import { Result } from '../../utils/Result';
 import { CacheDatasource } from '../datasources/CacheDatasource';
 import { DatabaseDatasource } from '../datasources/DatabaseDatasource';
-import { TodoModel } from '../model/TodoModel';
+import { CreateTodoModel, TodoModel } from '../model/TodoModel';
 import {
   TodoRepository,
   TodoRepositoryCreateRes,
@@ -16,11 +15,26 @@ export class TodoRepositoryImpl implements TodoRepository {
     private cache: CacheDatasource<TodoModel[]>,
   ) {}
 
+  private lastIndex = 0;
+
   @ExceptionHandler()
-  async create(payload: CreateTodo): TodoRepositoryCreateRes {
+  async create({
+    title,
+    describe,
+    status,
+  }: CreateTodoModel): TodoRepositoryCreateRes {
     this.cache.clear();
 
-    const todo = await this.datasource.createTodo(payload);
+    this.lastIndex++;
+
+    const todo = await this.datasource.createTodo({
+      id: `id-${this.lastIndex}`,
+      title,
+      describe,
+      status,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
 
     return Result.Success(todo);
   }

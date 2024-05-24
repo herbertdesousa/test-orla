@@ -1,6 +1,5 @@
-import { CreateTodo } from '../../domain/entities/Todo';
 import { DefaultResultFailure, Result } from '../../utils/Result';
-import { TodoModel } from '../model/TodoModel';
+import { CreateTodoModel, TodoModel } from '../model/TodoModel';
 
 export type TodoRepositoryCreateRes = Promise<
   Result<TodoModel, DefaultResultFailure>
@@ -11,7 +10,7 @@ export type TodoRepositoryListAllRes = Promise<
 >;
 
 export interface TodoRepository {
-  create(payload: CreateTodo): TodoRepositoryCreateRes;
+  create(payload: CreateTodoModel): TodoRepositoryCreateRes;
 
   listAll(): TodoRepositoryListAllRes;
 }

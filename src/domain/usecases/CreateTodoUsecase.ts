@@ -5,7 +5,7 @@ import { Usecase } from './Usecase';
 
 type Req = CreateTodo;
 type Res = Result<
-  Todo,
+  Todo[],
   | DefaultResultFailure
   | { code: 'VALIDATION'; payload: Partial<Record<keyof CreateTodo, string[]>> }
 >;
@@ -23,14 +23,24 @@ export class CreateTodoUsecase implements Usecase<Req, Res> {
       });
     }
 
-    const { result } = await this.todoRepository.create(payload);
+    const created = await this.todoRepository.create({
+      title: payload.title,
+      describe: payload.describe,
+      status: 'PENDING',
+    });
 
-    if (result.type === 'FAILURE') {
+    if (created.result.type === 'FAILURE') {
       return Result.Failure({ code: 'UNKNOWN' });
     }
 
-    const createdTodo = result.payload;
+    const todos = await this.todoRepository.listAll();
 
-    return Result.Success(Todo.fromModel(createdTodo));
+    if (todos.result.type === 'FAILURE') {
+      return Result.Failure({ code: 'UNKNOWN' });
+    }
+
+    return Result.Success(
+      todos.result.payload.map(todo => Todo.fromModel(todo)),
+    );
   }
 }

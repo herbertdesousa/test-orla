@@ -1,5 +1,6 @@
 import { ExceptionHandler } from '../../utils/ExceptionHandler';
 import { Result } from '../../utils/Result';
+import { CreateTodoModel, TodoModel } from '../model/TodoModel';
 import {
   TodoRepository,
   TodoRepositoryCreateRes,
@@ -7,36 +8,29 @@ import {
 } from './TodoRepository';
 
 export class MockTodoRepository implements TodoRepository {
-  async create(): TodoRepositoryCreateRes {
-    return Result.Success({
+  private todos: TodoModel[] = [];
+
+  async create({
+    title,
+    describe,
+    status,
+  }: CreateTodoModel): TodoRepositoryCreateRes {
+    const todo: TodoModel = {
       id: 'id-123',
-      title: 'Task I',
-      describe: 'do something',
-      status: 'PENDING',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+      title,
+      describe,
+      status,
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+    };
+
+    this.todos.push(todo);
+
+    return Result.Success(todo);
   }
 
   @ExceptionHandler()
   async listAll(): TodoRepositoryListAllRes {
-    return Result.Success([
-      {
-        id: 'id-123',
-        title: 'Task I',
-        describe: 'do something',
-        status: 'PENDING',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 'id-456',
-        title: 'Task II',
-        describe: 'do something',
-        status: 'DONE',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
+    return Result.Success(this.todos);
   }
 }

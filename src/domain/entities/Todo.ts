@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { TodoModel } from '../../data/model/TodoModel';
 
 export const CreateTodo = z.object({
-  title: z.string(),
+  title: z.string().min(1, 'Required'),
 
   describe: z.string(),
 });
