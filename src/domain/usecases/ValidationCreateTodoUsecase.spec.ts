@@ -2,7 +2,7 @@ import { ValidationCreateTodoUsecase } from './ValidationCreateTodoUsecase';
 
 const usecase = new ValidationCreateTodoUsecase();
 
-describe('ValidationCreateTodoUsecase.spec', () => {
+describe('ValidationUpdateTodoUsecase.spec', () => {
   it('should be to validate required fields', async () => {
     const { result } = await usecase.execute({
       title: '',

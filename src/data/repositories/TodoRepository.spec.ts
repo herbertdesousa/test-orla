@@ -119,4 +119,65 @@ describe('TodoRepository', () => {
       }
     });
   });
+
+  describe('update', () => {
+    it('should be able to update a todo', async () => {
+      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
+
+      const dateNow = Date.now();
+      const date = new Date(dateNow);
+
+      const createdAt = new Date(2024, 0, 1);
+
+      await databaseDatasource.createTodo({
+        id: 'id-123',
+        title: 'old',
+        describe: 'old',
+        status: 'PENDING',
+        createdAt,
+        updatedAt: new Date(),
+      });
+
+      jest.spyOn(Date, 'now').mockImplementation(() => dateNow);
+
+      const { result } = await todoRepository.update({
+        id: 'id-123',
+        title: 'Task I',
+        describe: 'do something',
+        status: 'DONE',
+      });
+
+      expect(cacheClear).toHaveBeenCalledTimes(1);
+
+      expect(result.type === 'SUCCESS').toBeTruthy();
+
+      if (result.type === 'SUCCESS') {
+        expect(result.payload).toMatchObject({
+          id: `id-123`,
+          title: 'Task I',
+          describe: 'do something',
+          status: 'DONE',
+          createdAt,
+          updatedAt: date,
+        });
+      }
+    });
+
+    it('should be able to return not found if not found', async () => {
+      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
+
+      const { result } = await todoRepository.update({
+        id: 'non-existing-id',
+        title: 'Task I',
+        describe: 'do something',
+        status: 'DONE',
+      });
+
+      expect(cacheClear).toHaveBeenCalledTimes(0);
+
+      expect(
+        result.type === 'FAILURE' && result.data.code === 'NOT_FOUND',
+      ).toBeTruthy();
+    });
+  });
 });

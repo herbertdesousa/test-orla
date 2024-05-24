@@ -34,3 +34,14 @@ export class Todo {
     return entity;
   }
 }
+
+export const UpdateTodo = z.object({
+  id: z.string().min(1, 'Required'),
+
+  title: z.string().optional(),
+
+  describe: z.string().optional(),
+
+  isDone: z.boolean().optional(),
+});
+export type UpdateTodo = z.infer<typeof UpdateTodo>;

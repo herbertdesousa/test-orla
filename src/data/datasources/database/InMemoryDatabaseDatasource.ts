@@ -1,4 +1,4 @@
-import { TodoModel } from '../../model/TodoModel';
+import { TodoModel, UpdateTodoModel } from '../../model/TodoModel';
 import { DatabaseDatasource } from './DatabaseDatasource';
 
 export class InMemoryDatabaseDatasource implements DatabaseDatasource {
@@ -12,5 +12,31 @@ export class InMemoryDatabaseDatasource implements DatabaseDatasource {
 
   async listAllTodos(): Promise<TodoModel[]> {
     return this.todos;
+  }
+
+  async updateTodo(payload: UpdateTodoModel): Promise<TodoModel | null> {
+    const todoIndex = this.todos.findIndex(todo => todo.id === payload.id);
+
+    if (todoIndex === -1) {
+      return null;
+    }
+
+    if (payload?.title) {
+      this.todos[todoIndex].title = payload.title;
+    }
+    if (payload?.describe) {
+      this.todos[todoIndex].describe = payload.describe;
+    }
+    if (payload?.status) {
+      this.todos[todoIndex].status = payload.status;
+    }
+    if (payload?.createdAt) {
+      this.todos[todoIndex].createdAt = payload.createdAt;
+    }
+    if (payload?.updatedAt) {
+      this.todos[todoIndex].updatedAt = payload.updatedAt;
+    }
+
+    return this.todos[todoIndex];
   }
 }

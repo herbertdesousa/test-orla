@@ -2,11 +2,16 @@ import { ExceptionHandler } from '../../utils/ExceptionHandler';
 import { Result } from '../../utils/Result';
 import { CacheDatasource } from '../datasources/cache/CacheDatasource';
 import { DatabaseDatasource } from '../datasources/database/DatabaseDatasource';
-import { CreateTodoModel, TodoModel } from '../model/TodoModel';
+import {
+  CreateTodoModel,
+  TodoModel,
+  UpdateTodoModel,
+} from '../model/TodoModel';
 import {
   TodoRepository,
   TodoRepositoryCreateRes,
   TodoRepositoryListAllRes,
+  TodoRepositoryUpdateRes,
 } from './TodoRepository';
 
 export class TodoRepositoryImpl implements TodoRepository {
@@ -52,5 +57,29 @@ export class TodoRepositoryImpl implements TodoRepository {
     this.cache.set(todos);
 
     return Result.Success(todos);
+  }
+
+  @ExceptionHandler()
+  async update({
+    id,
+    title,
+    describe,
+    status,
+  }: UpdateTodoModel): TodoRepositoryUpdateRes {
+    const todo = await this.datasource.updateTodo({
+      id,
+      title,
+      describe,
+      status,
+      updatedAt: new Date(Date.now()),
+    });
+
+    if (todo === null) {
+      return Result.Failure({ code: 'NOT_FOUND' });
+    }
+
+    this.cache.clear();
+
+    return Result.Success(todo);
   }
 }

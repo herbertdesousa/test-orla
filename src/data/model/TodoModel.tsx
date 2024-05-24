@@ -23,3 +23,18 @@ export const CreateTodoModel = z.object({
   status: z.enum(['PENDING', 'DONE']),
 });
 export type CreateTodoModel = z.infer<typeof CreateTodoModel>;
+
+export const UpdateTodoModel = z.object({
+  id: z.string(),
+
+  title: z.string().optional(),
+
+  describe: z.string().optional(),
+
+  status: z.enum(['PENDING', 'DONE']).optional(),
+
+  createdAt: z.date().optional(),
+
+  updatedAt: z.date().optional(),
+});
+export type UpdateTodoModel = z.infer<typeof UpdateTodoModel>;
