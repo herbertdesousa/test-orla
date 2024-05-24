@@ -4,6 +4,7 @@ import { COLORS } from '../Colors';
 
 export const Btn = styled(RectButton)`
   flex-direction: row;
+  justify-content: center;
   align-items: center;
   gap: 8px;
 

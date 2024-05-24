@@ -12,18 +12,24 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTodoList } from './useTodoList';
 import { Button } from '../../components/Button';
 import { COLORS } from '../../Colors';
+import { RouteStack } from '../Router';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export function TodoList() {
+type Props = NativeStackScreenProps<RouteStack, 'Home'>;
+
+export function TodoList({ navigation }: Props) {
   const { todos } = useTodoList();
+
+  function handleCreate() {
+    navigation.navigate('Save');
+  }
 
   return (
     <Container>
       <ListHeader>
         <Title>To do</Title>
 
-        <Button
-          left={<Icon name="add" size={24} />}
-          onPress={() => console.log('hellow')}>
+        <Button left={<Icon name="add" size={24} />} onPress={handleCreate}>
           Create
         </Button>
       </ListHeader>
