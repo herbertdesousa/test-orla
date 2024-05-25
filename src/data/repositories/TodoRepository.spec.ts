@@ -216,7 +216,7 @@ describe('TodoRepository', () => {
   });
 
   describe('queryAnyField', () => {
-    it('should be able to delete a todo', async () => {
+    it('should be able to query any field', async () => {
       await databaseDatasource.createTodo({
         id: 'id-123',
         title: 'Task I',
