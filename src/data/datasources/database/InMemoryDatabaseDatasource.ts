@@ -14,6 +14,29 @@ export class InMemoryDatabaseDatasource implements DatabaseDatasource {
     return this.todos;
   }
 
+  private normalize(str: string): string {
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  }
+
+  async queryAnyTodoField(query: string): Promise<TodoModel[]> {
+    const queryNorm = this.normalize(query);
+
+    const queried = this.todos.filter(todo => {
+      return [
+        this.normalize(todo.title),
+        this.normalize(todo.status),
+        this.normalize(todo.describe),
+        String(todo.createdAt),
+        String(todo.updatedAt),
+      ].some(field => field.includes(queryNorm));
+    });
+
+    return queried;
+  }
+
   async updateTodo(payload: UpdateTodoModel): Promise<TodoModel | null> {
     const todoIndex = this.todos.findIndex(todo => todo.id === payload.id);
 

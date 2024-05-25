@@ -26,6 +26,8 @@ export interface TodoRepository {
 
   listAll(): TodoRepositoryListAllRes;
 
+  queryAnyField(query: string): TodoRepositoryListAllRes;
+
   update(payload: UpdateTodoModel): TodoRepositoryUpdateRes;
 
   delete(id: string): TodoRepositoryDeleteRes;

@@ -31,7 +31,7 @@ export class TodoRepositoryImpl implements TodoRepository {
     describe,
     status,
   }: CreateTodoModel): TodoRepositoryCreateRes {
-    this.cache.remove(CACHE_LIST_ALL_KEY);
+    this.cache.clear();
 
     this.lastIndex++;
 
@@ -81,14 +81,14 @@ export class TodoRepositoryImpl implements TodoRepository {
       return Result.Failure({ code: 'NOT_FOUND' });
     }
 
-    this.cache.remove(CACHE_LIST_ALL_KEY);
+    this.cache.clear();
 
     return Result.Success(todo);
   }
 
   @ExceptionHandler()
   async delete(id: string): TodoRepositoryDeleteRes {
-    this.cache.remove(CACHE_LIST_ALL_KEY);
+    this.cache.clear();
 
     const deletedTodo = await this.datasource.deleteTodo(id);
 
@@ -97,5 +97,20 @@ export class TodoRepositoryImpl implements TodoRepository {
     }
 
     return Result.Success(deletedTodo);
+  }
+
+  @ExceptionHandler()
+  async queryAnyField(query: string): TodoRepositoryListAllRes {
+    const cached = this.cache.get(query);
+
+    if (cached) {
+      return Result.Success(cached);
+    }
+
+    const queried = await this.datasource.queryAnyTodoField(query);
+
+    this.cache.set(query, queried);
+
+    return Result.Success(queried);
   }
 }

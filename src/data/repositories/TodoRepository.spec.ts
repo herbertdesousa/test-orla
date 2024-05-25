@@ -21,7 +21,7 @@ describe('TodoRepository', () => {
 
   describe('create', () => {
     it('should be able to create a todo', async () => {
-      const cacheClear = jest.spyOn(cacheDatasource, 'remove');
+      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
 
       const dateNow = Date.now();
       const date = new Date(dateNow);
@@ -126,7 +126,7 @@ describe('TodoRepository', () => {
 
   describe('update', () => {
     it('should be able to update a todo', async () => {
-      const cacheClear = jest.spyOn(cacheDatasource, 'remove');
+      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
 
       const dateNow = Date.now();
       const date = new Date(dateNow);
@@ -168,7 +168,7 @@ describe('TodoRepository', () => {
     });
 
     it('should be able to return not found if not found', async () => {
-      const cacheClear = jest.spyOn(cacheDatasource, 'remove');
+      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
 
       const { result } = await todoRepository.update({
         id: 'non-existing-id',
@@ -196,7 +196,7 @@ describe('TodoRepository', () => {
         updatedAt: new Date(),
       });
 
-      const cacheClear = jest.spyOn(cacheDatasource, 'remove');
+      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
 
       const { result } = await todoRepository.delete('id-123');
 
@@ -212,6 +212,103 @@ describe('TodoRepository', () => {
       expect(
         result.type === 'FAILURE' && result.data.code === 'NOT_FOUND',
       ).toBeTruthy();
+    });
+  });
+
+  describe('queryAnyField', () => {
+    it('should be able to delete a todo', async () => {
+      await databaseDatasource.createTodo({
+        id: 'id-123',
+        title: 'Task I',
+        describe: 'do something',
+        status: 'DONE',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      await databaseDatasource.createTodo({
+        id: 'id-456',
+        title: 'Task II',
+        describe: 'do sómething',
+        status: 'PENDING',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      await databaseDatasource.createTodo({
+        id: 'id-789',
+        title: 'Some Other Tãsk',
+        describe: 'do something',
+        status: 'DONE',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      await databaseDatasource.createTodo({
+        id: 'id-753',
+        title: 'Sême Other',
+        describe: 'dó something',
+        status: 'PENDING',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      const { result } = await todoRepository.queryAnyField('task');
+      expect(result.type === 'SUCCESS').toBeTruthy();
+      if (result.type === 'SUCCESS') {
+        expect(result.payload.length).toBe(3);
+      }
+
+      const { result: result2 } = await todoRepository.queryAnyField('pendi');
+      expect(result2.type === 'SUCCESS').toBeTruthy();
+      if (result2.type === 'SUCCESS') {
+        expect(result2.payload.length).toBe(2);
+      }
+
+      const { result: result3 } = await todoRepository.queryAnyField(
+        'something',
+      );
+      expect(result3.type === 'SUCCESS').toBeTruthy();
+      if (result3.type === 'SUCCESS') {
+        expect(result3.payload.length).toBe(4);
+      }
+    });
+
+    it('should be able to query cached', async () => {
+      const queryMock = jest.spyOn(databaseDatasource, 'queryAnyTodoField');
+
+      await databaseDatasource.createTodo({
+        id: 'id-123',
+        title: 'Task I',
+        describe: 'do something',
+        status: 'PENDING',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      await databaseDatasource.createTodo({
+        id: 'id-456',
+        title: 'Task II',
+        describe: 'do sómething',
+        status: 'PENDING',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      const { result } = await todoRepository.queryAnyField('task');
+
+      expect(queryMock).toHaveBeenCalledTimes(1);
+
+      expect(result.type === 'SUCCESS').toBeTruthy();
+      if (result.type === 'SUCCESS') {
+        expect(result.payload.length).toBe(2);
+      }
+
+      //
+
+      expect(queryMock).toHaveBeenCalledTimes(1);
+
+      const { result: result2 } = await todoRepository.queryAnyField('task');
+      expect(result2.type === 'SUCCESS').toBeTruthy();
+      if (result2.type === 'SUCCESS') {
+        expect(result2.payload.length).toBe(2);
+      }
     });
   });
 });
