@@ -15,6 +15,8 @@ import {
   TodoRepositoryUpdateRes,
 } from './TodoRepository';
 
+const CACHE_LIST_ALL_KEY = '@LIST_LIST_ALL_KEY' + Math.random() * 100;
+
 export class TodoRepositoryImpl implements TodoRepository {
   constructor(
     private datasource: DatabaseDatasource,
@@ -29,7 +31,7 @@ export class TodoRepositoryImpl implements TodoRepository {
     describe,
     status,
   }: CreateTodoModel): TodoRepositoryCreateRes {
-    this.cache.clear();
+    this.cache.remove(CACHE_LIST_ALL_KEY);
 
     this.lastIndex++;
 
@@ -47,15 +49,15 @@ export class TodoRepositoryImpl implements TodoRepository {
 
   @ExceptionHandler()
   async listAll(): TodoRepositoryListAllRes {
-    const cachedTodos = this.cache.get();
+    const cachedTodos = this.cache.get(CACHE_LIST_ALL_KEY);
 
-    if (cachedTodos !== null) {
+    if (cachedTodos) {
       return Result.Success(cachedTodos);
     }
 
     const todos = await this.datasource.listAllTodos();
 
-    this.cache.set(todos);
+    this.cache.set(CACHE_LIST_ALL_KEY, todos);
 
     return Result.Success(todos);
   }
@@ -79,14 +81,14 @@ export class TodoRepositoryImpl implements TodoRepository {
       return Result.Failure({ code: 'NOT_FOUND' });
     }
 
-    this.cache.clear();
+    this.cache.remove(CACHE_LIST_ALL_KEY);
 
     return Result.Success(todo);
   }
 
   @ExceptionHandler()
   async delete(id: string): TodoRepositoryDeleteRes {
-    this.cache.clear();
+    this.cache.remove(CACHE_LIST_ALL_KEY);
 
     const deletedTodo = await this.datasource.deleteTodo(id);
 

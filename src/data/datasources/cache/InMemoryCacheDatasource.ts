@@ -1,15 +1,25 @@
-export class InMemoryCacheDatasource<Data> {
-  private cache: null | Data = null;
+import { CacheDatasource } from './CacheDatasource';
+
+export class InMemoryCacheDatasource<Data> implements CacheDatasource<Data> {
+  private cache: Record<string, Data> = {};
 
   clear() {
-    this.cache = null;
+    this.cache = {};
   }
 
-  set(cache: Data) {
-    this.cache = cache;
+  checkEmpty(): boolean {
+    return Object.entries(this.cache).length === 0;
   }
 
-  get() {
-    return this.cache;
+  set(key: string, cache: Data) {
+    this.cache[key] = cache;
+  }
+
+  get(key: string) {
+    return this.cache[key] || null;
+  }
+
+  remove(key: string): void {
+    delete this.cache[key];
   }
 }

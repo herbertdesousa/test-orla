@@ -21,7 +21,7 @@ describe('TodoRepository', () => {
 
   describe('create', () => {
     it('should be able to create a todo', async () => {
-      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
+      const cacheClear = jest.spyOn(cacheDatasource, 'remove');
 
       const dateNow = Date.now();
       const date = new Date(dateNow);
@@ -126,7 +126,7 @@ describe('TodoRepository', () => {
 
   describe('update', () => {
     it('should be able to update a todo', async () => {
-      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
+      const cacheClear = jest.spyOn(cacheDatasource, 'remove');
 
       const dateNow = Date.now();
       const date = new Date(dateNow);
@@ -168,7 +168,7 @@ describe('TodoRepository', () => {
     });
 
     it('should be able to return not found if not found', async () => {
-      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
+      const cacheClear = jest.spyOn(cacheDatasource, 'remove');
 
       const { result } = await todoRepository.update({
         id: 'non-existing-id',
@@ -196,7 +196,7 @@ describe('TodoRepository', () => {
         updatedAt: new Date(),
       });
 
-      const cacheClear = jest.spyOn(cacheDatasource, 'clear');
+      const cacheClear = jest.spyOn(cacheDatasource, 'remove');
 
       const { result } = await todoRepository.delete('id-123');
 

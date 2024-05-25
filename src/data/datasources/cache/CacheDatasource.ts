@@ -1,7 +1,11 @@
 export interface CacheDatasource<Data> {
   clear(): void;
 
-  set(cache: Data): void;
+  remove(key: string): void;
 
-  get(): Data | null;
+  set(key: string, cache: Data): void;
+
+  get(key: string): Data | null;
+
+  checkEmpty(): boolean;
 }
