@@ -40,8 +40,8 @@ export class TodoRepositoryImpl implements TodoRepository {
       title,
       describe,
       status,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
     });
 
     return Result.Success(todo);
