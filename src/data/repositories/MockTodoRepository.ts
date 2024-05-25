@@ -42,6 +42,11 @@ export class MockTodoRepository implements TodoRepository {
   }
 
   @ExceptionHandler()
+  async queryAnyField(): TodoRepositoryListAllRes {
+    return Result.Success(this.todos);
+  }
+
+  @ExceptionHandler()
   async update(req: UpdateTodoModel): TodoRepositoryUpdateRes {
     const todoIndex = this.todos.findIndex(todo => todo.id === req.id);
 

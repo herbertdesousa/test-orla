@@ -5,12 +5,13 @@ Sou Herbert e essa é minha implementação do desafio. A arquitura da aplicaç�
 [x] update
   [x] logic
   [x] view
-[] delete
-  [] logic
-  [] view
+[x] delete
+  [x] logic
+  [x] view
 [] search
   [] logic
   [] view
+[] localstorage
 [] readme
 
 add 'como rodar o projeto'

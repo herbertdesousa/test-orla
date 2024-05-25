@@ -29,8 +29,8 @@ export class InMemoryDatabaseDatasource implements DatabaseDatasource {
         this.normalize(todo.title),
         this.normalize(todo.status),
         this.normalize(todo.describe),
-        String(todo.createdAt),
-        String(todo.updatedAt),
+        // String(todo.createdAt),
+        // String(todo.updatedAt),
       ].some(field => field.includes(queryNorm));
     });
 

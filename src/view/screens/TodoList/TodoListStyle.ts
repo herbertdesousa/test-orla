@@ -7,15 +7,19 @@ import { Todo } from '../../../domain/entities/Todo';
 export const Container = styled.View`
   flex: 1;
   background-color: ${COLORS.surface};
-  padding-top: 32px;
-  gap: 16px;
+  gap: 32px;
+  padding: 32px 24px 0 24px;
 `;
 
 export const ListHeader = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+`;
+
+export const InputContainer = styled.View`
+  flex-direction: row;
+  gap: 8px;
 `;
 
 export const Title = styled.Text`
@@ -24,9 +28,14 @@ export const Title = styled.Text`
   color: ${COLORS.onSurface};
 `;
 
+export const WarningText = styled.Text`
+  font-size: 16px;
+  text-align: center;
+  color: ${COLORS.onSurface};
+`;
+
 export const List = styled(FlatList<Todo>)`
   flex: 1;
-  padding: 24px;
 `;
 
 export const ListItem = styled(RectButton)`

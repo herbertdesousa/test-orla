@@ -4,15 +4,21 @@ import { DefaultResultFailure, Result } from '../../utils/Result';
 import { Todo } from '../entities/Todo';
 import { Usecase } from './Usecase';
 
-type Req = {};
+type Req = { query?: string };
 type Res = Result<Todo[], DefaultResultFailure>;
 
 export class ListTodoUsecase implements Usecase<Req, Res> {
   constructor(private todoRepository: TodoRepository) {}
 
   @ExceptionHandler()
-  async execute(): Promise<Res> {
-    const { result } = await this.todoRepository.listAll();
+  async execute({ query }: Req): Promise<Res> {
+    const { result } = await (async () => {
+      if (query) {
+        return await this.todoRepository.queryAnyField(query);
+      } else {
+        return await this.todoRepository.listAll();
+      }
+    })();
 
     if (result.type === 'FAILURE') {
       return Result.Failure({ code: 'UNKNOWN' });
