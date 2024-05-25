@@ -1,16 +1,23 @@
 import { TodoModel, UpdateTodoModel } from '../../model/TodoModel';
-import { DatabaseDatasource } from './DatabaseDatasource';
+import {
+  CreateTodoRes,
+  DatabaseDatasource,
+  DeleteTodoRes,
+  ListAllTodosRes,
+  QueryAnyTodoFieldRes,
+  UpdateTodoRes,
+} from './DatabaseDatasource';
 
 export class InMemoryDatabaseDatasource implements DatabaseDatasource {
   private todos: TodoModel[] = [];
 
-  async createTodo(createTodo: TodoModel): Promise<TodoModel> {
+  async createTodo(createTodo: TodoModel): CreateTodoRes {
     this.todos.push(createTodo);
 
     return createTodo;
   }
 
-  async listAllTodos(): Promise<TodoModel[]> {
+  async listAllTodos(): ListAllTodosRes {
     return this.todos;
   }
 
@@ -21,7 +28,7 @@ export class InMemoryDatabaseDatasource implements DatabaseDatasource {
       .toLowerCase();
   }
 
-  async queryAnyTodoField(query: string): Promise<TodoModel[]> {
+  async queryAnyTodoField(query: string): QueryAnyTodoFieldRes {
     const queryNorm = this.normalize(query);
 
     const queried = this.todos.filter(todo => {
@@ -37,7 +44,7 @@ export class InMemoryDatabaseDatasource implements DatabaseDatasource {
     return queried;
   }
 
-  async updateTodo(payload: UpdateTodoModel): Promise<TodoModel | null> {
+  async updateTodo(payload: UpdateTodoModel): UpdateTodoRes {
     const todoIndex = this.todos.findIndex(todo => todo.id === payload.id);
 
     if (todoIndex === -1) {
@@ -63,7 +70,7 @@ export class InMemoryDatabaseDatasource implements DatabaseDatasource {
     return this.todos[todoIndex];
   }
 
-  async deleteTodo(id: string): Promise<TodoModel | null> {
+  async deleteTodo(id: string): DeleteTodoRes {
     const todoIndex = this.todos.findIndex(todo => todo.id === id);
 
     if (todoIndex === -1) {

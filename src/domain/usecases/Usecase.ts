@@ -1,10 +1,9 @@
 import { InMemoryCacheDatasource } from '../../data/datasources/cache/InMemoryCacheDatasource';
-import { InMemoryDatabaseDatasource } from '../../data/datasources/database/InMemoryDatabaseDatasource';
+import { LocalStorageDatabaseDatasource } from '../../data/datasources/database/LocalStorageDatabaseDatasource';
 import { TodoRepositoryImpl } from '../../data/repositories/TodoRepositoryImpl';
 import { Result } from '../../utils/Result';
 import { CreateTodoUsecase } from './CreateTodoUsecase';
 import { DeleteTodoUsecase } from './DeleteTodoUsecase';
-// import { CreateTodoUsecase } from './CreateTodoUsecase';
 import { ListTodoUsecase } from './ListTodoUsecase';
 import { UpdateTodoUsecase } from './UpdateTodoUsecase';
 import { ValidationCreateTodoUsecase } from './ValidationCreateTodoUsecase';
@@ -16,10 +15,8 @@ export interface Usecase<Req, Res extends Result<any, any>> {
 
 //
 
-const todoDatasource = new InMemoryDatabaseDatasource();
-
 const todoRepository = new TodoRepositoryImpl(
-  todoDatasource,
+  new LocalStorageDatabaseDatasource(),
   new InMemoryCacheDatasource(),
 );
 

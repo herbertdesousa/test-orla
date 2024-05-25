@@ -9,9 +9,9 @@ export const TodoModel = z.object({
 
   describe: z.string(),
 
-  createdAt: z.date(),
+  createdAt: z.coerce.date(),
 
-  updatedAt: z.date(),
+  updatedAt: z.coerce.date(),
 });
 export type TodoModel = z.infer<typeof TodoModel>;
 

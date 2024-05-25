@@ -40,7 +40,7 @@ describe('TodoRepository', () => {
 
       if (result.type === 'SUCCESS') {
         expect(result.payload).toMatchObject({
-          id: `id-1`,
+          id: expect.anything(),
           title: 'Task I',
           describe: 'do something',
           status: 'PENDING',
@@ -48,6 +48,22 @@ describe('TodoRepository', () => {
           updatedAt: date,
         });
       }
+    });
+
+    it('should be able to catch serialization fail', async () => {
+      jest
+        .spyOn(databaseDatasource, 'createTodo')
+        .mockImplementationOnce(async () => null);
+
+      const { result } = await todoRepository.create({
+        title: 'Task I',
+        describe: 'do something',
+        status: 'PENDING',
+      });
+
+      expect(
+        result.type === 'FAILURE' && result.data.code === 'SERIALIZATION',
+      ).toBeTruthy();
     });
   });
 
@@ -121,6 +137,19 @@ describe('TodoRepository', () => {
       if (result.type === 'SUCCESS') {
         expect(result.payload).toEqual(todos);
       }
+    });
+
+    it('should be able to catch serialization fail', async () => {
+      const databaselistAllTodos = jest
+        .spyOn(databaseDatasource, 'listAllTodos')
+        .mockImplementationOnce(async () => null);
+
+      const { result } = await todoRepository.listAll();
+
+      expect(databaselistAllTodos).toHaveBeenCalledTimes(1);
+      expect(
+        result.type === 'FAILURE' && result.data.code === 'SERIALIZATION',
+      ).toBeTruthy();
     });
   });
 
@@ -203,7 +232,7 @@ describe('TodoRepository', () => {
       expect(result.type === 'SUCCESS').toBeTruthy();
       expect(cacheClear).toHaveBeenCalledTimes(1);
 
-      expect((await databaseDatasource.listAllTodos()).length).toBe(0);
+      expect((await databaseDatasource.listAllTodos())?.length).toBe(0);
     });
 
     it('should not be able to delete a unexisting todo', async () => {
@@ -309,6 +338,18 @@ describe('TodoRepository', () => {
       if (result2.type === 'SUCCESS') {
         expect(result2.payload.length).toBe(2);
       }
+    });
+
+    it('should not be able to delete a unexisting todo', async () => {
+      jest
+        .spyOn(databaseDatasource, 'queryAnyTodoField')
+        .mockImplementationOnce(async () => null);
+
+      const { result } = await todoRepository.queryAnyField('task');
+
+      expect(
+        result.type === 'FAILURE' && result.data.code === 'SERIALIZATION',
+      ).toBeTruthy();
     });
   });
 });

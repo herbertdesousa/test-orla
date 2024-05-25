@@ -6,11 +6,11 @@ import {
 } from '../model/TodoModel';
 
 export type TodoRepositoryCreateRes = Promise<
-  Result<TodoModel, DefaultResultFailure>
+  Result<TodoModel, DefaultResultFailure | { code: 'SERIALIZATION' }>
 >;
 
 export type TodoRepositoryListAllRes = Promise<
-  Result<TodoModel[], DefaultResultFailure>
+  Result<TodoModel[], DefaultResultFailure | { code: 'SERIALIZATION' }>
 >;
 
 export type TodoRepositoryUpdateRes = Promise<
