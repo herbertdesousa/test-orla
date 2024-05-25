@@ -16,6 +16,7 @@ import {
   ListItemTitle,
   Title,
 } from './TodoListStyle';
+import { useEffect } from 'react';
 
 type Props = NativeStackScreenProps<RouteStack, 'Home'>;
 
@@ -28,6 +29,11 @@ export function TodoList({ navigation }: Props) {
       dispatch: st.fetch,
     },
   }));
+
+  useEffect(() => {
+    search.dispatch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleCreate() {
     navigation.navigate('Save');
