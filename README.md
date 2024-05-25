@@ -1,35 +1,29 @@
 # Teste Orla
 Sou Herbert e essa é minha implementação do desafio. A arquitura da aplicação é uma mistura de <u>MVVM</u> com <u>Clean Archicture</u> herdados do Android Nativo com Kotlin, onde é comumente usado.
 
-[x] create view
-[x] update
-  [x] logic
-  [x] view
-[x] delete
-  [x] logic
-  [x] view
-[] search
-  [] logic
-  [] view
-[] localstorage
-[] readme
+1. [Rodando o Projeto](#StartUp)
+2. [Arquitetura](#Arquitetura)
+3. [Features](#Features)
 
-add 'como rodar o projeto'
-  explicar o --force
-  rodar teste com --clear
-add 'requisitos de negocio'
-add 'features'
-  cache
-  arquitetura
-    serialização de dados externa com validação
-    inspirações de outros lugares
-      result - sealed class em kotlin
-      exception handler decorator
-    in memory database - demostrando desacoplação de serviços
-add 'melhorias a ser feitas'
-  injeção de depencia na mão, talvez um tsyringe
+## StartUp
+### Rodando o Projeto
+Para rodar o projeto execute:
+```
+npm run install --force
+```
+a flat *force* é usada temporáriamente, a atual versão do react 18.2.0 é "incompatível" com a styled-componentes "6.1.11".
+```
+npm run android | ios
+```
+para rodar em seu dispositivel ou em um emulador.
 
-## Camadas
+### Rodando os Testes
+Para rodar a cobertura de testes unitários:
+```
+npm run test
+```
+
+## Arquitetura
 
 ### Data Layer
 Camada de dados da aplicação, toda interação com <u>APIs externas, Fonte de dados,
@@ -59,3 +53,15 @@ Nas **UseCases** são onde efetivamente as regras de negócios são feitas, regr
 **Components** Pasta de componentes comuns, como Input, Buttons...
 
 **Screens** Telas da aplicação
+
+## Features
+### Cache
+Na camada de **dados** em **repositories**, um datasource de cache em implementado em memory com invalidação ao criar, atualizar ou deletar algum dado.
+
+### Serialização de Dados
+Typescript vem com o propósito de melhorar o problema de tipagem fraca do Javascript, porém ele não atua em runtime, para isso foi aplicado o **zod** para validar e **serializar o dados** de fontes externas ainda na camada de dados.
+
+### Lidando com Errors
+A ideia central é evitar que dados externos **quebrem** a aplicação e para orquestrar os erros duas *features* com inspiração no android nativo foi implementado:
+- **Result**: baseado em **sealed class** do Kotlin e adaptado para o Typescript.
+- **ExceptionHandler**: Decorator que pega qualquer possível erro e resulta em um erro tratado.
