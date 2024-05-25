@@ -10,7 +10,7 @@ Para rodar o projeto execute:
 ```
 npm run install --force
 ```
-a flat *force* é usada temporáriamente, a atual versão do react 18.2.0 é "incompatível" com a styled-componentes "6.1.11".
+a flag *force* é usada temporáriamente, a atual versão do react 18.2.0 é "incompatível" com a styled-componentes "6.1.11".
 ```
 npm run android | ios
 ```
