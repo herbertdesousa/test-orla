@@ -28,12 +28,6 @@ export const Title = styled.Text`
   color: ${COLORS.onSurface};
 `;
 
-export const WarningText = styled.Text`
-  font-size: 16px;
-  text-align: center;
-  color: ${COLORS.onSurface};
-`;
-
 export const List = styled(FlatList<Todo>)`
   flex: 1;
 `;

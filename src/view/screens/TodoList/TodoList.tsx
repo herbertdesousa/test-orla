@@ -15,66 +15,46 @@ import {
   ListItemLeft,
   ListItemTitle,
   Title,
-  WarningText,
 } from './TodoListStyle';
 
 type Props = NativeStackScreenProps<RouteStack, 'Home'>;
 
 export function TodoList({ navigation }: Props) {
-  const { todos, search, isEmpty, isFiltering } = useTaskManager(st => ({
+  const { todos, search } = useTaskManager(st => ({
     todos: st.todos,
     search: {
       state: st.search,
       set: st.setSearch,
       dispatch: st.fetch,
     },
-    isEmpty: st.todos.length === 0,
-    isFiltering: st.search.length > 0,
   }));
 
   function handleCreate() {
     navigation.navigate('Save');
   }
 
-  const isFilteringAndEmpty = isFiltering && isEmpty;
-  const IsEmptyWithoutFiltering = isEmpty && !isFiltering;
-
   return (
     <Container>
       <ListHeader>
         <Title>To do</Title>
 
-        {!IsEmptyWithoutFiltering && (
-          <Button left={<Icon name="add" size={24} />} onPress={handleCreate}>
-            Create
-          </Button>
-        )}
+        <Button left={<Icon name="add" size={24} />} onPress={handleCreate}>
+          Create
+        </Button>
       </ListHeader>
 
-      {!IsEmptyWithoutFiltering && (
-        <InputContainer>
-          <Input
-            placeholder="Search by title, pending, done..."
-            value={search.state}
-            onChangeText={search.set}
-            style={{ flex: 1 }}
-          />
+      <InputContainer>
+        <Input
+          placeholder="Search by title, pending, done..."
+          value={search.state}
+          onChangeText={search.set}
+          style={{ flex: 1 }}
+        />
 
-          <Button onPress={search.dispatch} style={{ aspectRatio: 1 }}>
-            <Icon name="search" size={24} />
-          </Button>
-        </InputContainer>
-      )}
-
-      {isFilteringAndEmpty && (
-        <WarningText>Nenhuma busca encontrada</WarningText>
-      )}
-
-      {IsEmptyWithoutFiltering && (
-        <Button left={<Icon name="add" size={24} />} onPress={handleCreate}>
-          Create a new To do
+        <Button onPress={search.dispatch} style={{ aspectRatio: 1 }}>
+          <Icon name="search" size={24} />
         </Button>
-      )}
+      </InputContainer>
 
       <List
         data={todos}
